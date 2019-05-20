@@ -8,6 +8,21 @@
 				"typeProperties": {
 					"waitTimeInSeconds": 5
 				}
+			},
+			{
+				"name": "Wait1",
+				"type": "Wait",
+				"dependsOn": [
+					{
+						"activity": "Wait",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"typeProperties": {
+					"waitTimeInSeconds": 1
+				}
 			}
 		]
 	}
