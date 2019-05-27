@@ -21,8 +21,6 @@
 					{
 						"name": "Wait",
 						"type": "Wait",
-						"dependsOn": [],
-						"userProperties": [],
 						"typeProperties": {
 							"waitTimeInSeconds": 5
 						}
@@ -38,15 +36,12 @@
 								]
 							}
 						],
-						"userProperties": [],
 						"typeProperties": {
 							"waitTimeInSeconds": 1
 						}
 					}
-				],
-				"annotations": []
-			},
-			"dependsOn": []
+				]
+			}
 		}
 	]
 }
