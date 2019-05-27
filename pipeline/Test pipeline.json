@@ -3,7 +3,7 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "Wait",
+				"name": "Wait To See This",
 				"type": "Wait",
 				"typeProperties": {
 					"waitTimeInSeconds": 5
@@ -14,7 +14,7 @@
 				"type": "Wait",
 				"dependsOn": [
 					{
-						"activity": "Wait",
+						"activity": "Wait To See This",
 						"dependencyConditions": [
 							"Succeeded"
 						]
