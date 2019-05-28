@@ -293,6 +293,29 @@
 								"referenceName": "CustomersDb",
 								"type": "LinkedServiceReference"
 							}
+						},
+						{
+							"name": "Notify Success",
+							"type": "WebActivity",
+							"dependsOn": [
+								{
+									"activity": "Update Marker",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"timeout": "7.00:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"typeProperties": {
+								"url": "https://prod-16.westeurope.logic.azure.com:443/workflows/c7907ae2c53d4c42af06736350a0d91f/triggers/manual/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=bgZTsV47pxxpgjVpw6UgmLEdqcnQzPAS3h6oXanB3Yw",
+								"method": "POST"
+							}
 						}
 					]
 				}
