@@ -46,7 +46,7 @@
 					"storedProcedureParameters": {
 						"Customers": {
 							"value": {
-								"value": "@activity('Lookup Customers').output",
+								"value": "@activity('Lookup Customers').output.value",
 								"type": "Expression"
 							},
 							"type": "CustomersTable"
