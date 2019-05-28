@@ -261,6 +261,38 @@
 									"type": "DatasetReference"
 								}
 							]
+						},
+						{
+							"name": "Update Marker",
+							"type": "SqlServerStoredProcedure",
+							"dependsOn": [
+								{
+									"activity": "Copy Customers",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"timeout": "7.00:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"typeProperties": {
+								"storedProcedureName": "[dbo].[sp_update_marker]",
+								"storedProcedureParameters": {
+									"TableName": {
+										"value": "Customer",
+										"type": "String"
+									}
+								}
+							},
+							"linkedServiceName": {
+								"referenceName": "CustomersDb",
+								"type": "LinkedServiceReference"
+							}
 						}
 					]
 				}
