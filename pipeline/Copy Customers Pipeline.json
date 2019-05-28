@@ -17,7 +17,9 @@
 						"type": "AzureSqlSource"
 					},
 					"sink": {
-						"type": "AzureSqlSink"
+						"type": "AzureSqlSink",
+						"sqlWriterStoredProcedureName": "[dbo].[sp_upsert_customers]",
+						"sqlWriterTableType": "CustomerTable"
 					},
 					"enableStaging": false,
 					"translator": {
