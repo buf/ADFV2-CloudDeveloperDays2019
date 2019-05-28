@@ -42,16 +42,7 @@
 					"secureInput": false
 				},
 				"typeProperties": {
-					"storedProcedureName": "[dbo].[sp_upsert_customers]",
-					"storedProcedureParameters": {
-						"Customers": {
-							"value": {
-								"value": "@activity('Lookup Customers').output.value",
-								"type": "Expression"
-							},
-							"type": "CustomersTable"
-						}
-					}
+					"storedProcedureName": "[dbo].[sp_upsert_customers]"
 				},
 				"linkedServiceName": {
 					"referenceName": "CustomersDb",
