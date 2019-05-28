@@ -5,6 +5,9 @@
 			"referenceName": "AWDb",
 			"type": "LinkedServiceReference"
 		},
+		"folder": {
+			"name": "AW"
+		},
 		"type": "AzureSqlTable",
 		"schema": [
 			{
