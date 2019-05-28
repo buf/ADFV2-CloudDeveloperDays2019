@@ -6,14 +6,6 @@
 			"type": "string",
 			"metadata": "Data Factory Name",
 			"defaultValue": "datafactory-cdd2019"
-		},
-		"AWDb_connectionString": {
-			"type": "secureString",
-			"metadata": "Secure string for 'connectionString' of 'AWDb'"
-		},
-		"CustomersDb_connectionString": {
-			"type": "secureString",
-			"metadata": "Secure string for 'connectionString' of 'CustomersDb'"
 		}
 	},
 	"variables": {
@@ -29,8 +21,6 @@
 					{
 						"name": "Wait To See This",
 						"type": "Wait",
-						"dependsOn": [],
-						"userProperties": [],
 						"typeProperties": {
 							"waitTimeInSeconds": 5
 						}
@@ -46,15 +36,12 @@
 								]
 							}
 						],
-						"userProperties": [],
 						"typeProperties": {
 							"waitTimeInSeconds": 1
 						}
 					}
-				],
-				"annotations": []
-			},
-			"dependsOn": []
+				]
+			}
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/AwCustomersTable')]",
@@ -68,7 +55,6 @@
 				"folder": {
 					"name": "AW"
 				},
-				"annotations": [],
 				"type": "AzureSqlTable",
 				"schema": [
 					{
@@ -138,36 +124,7 @@
 				"typeProperties": {
 					"tableName": "[[SalesLT].[Customer]"
 				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/AWDb')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/AWDb')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"type": "AzureSqlDatabase",
-				"typeProperties": {
-					"connectionString": "[parameters('AWDb_connectionString')]"
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/CustomersDb')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"type": "AzureSqlDatabase",
-				"typeProperties": {
-					"connectionString": "[parameters('CustomersDb_connectionString')]"
-				}
-			},
-			"dependsOn": []
+			}
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/CustomersTarget')]",
@@ -178,7 +135,6 @@
 					"referenceName": "CustomersDb",
 					"type": "LinkedServiceReference"
 				},
-				"annotations": [],
 				"type": "AzureSqlTable",
 				"schema": [
 					{
@@ -248,10 +204,7 @@
 				"typeProperties": {
 					"tableName": "[[dbo].[Customer]"
 				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/CustomersDb')]"
-			]
+			}
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/Copy Customers Pipeline')]",
@@ -262,7 +215,6 @@
 					{
 						"name": "Copy Customers",
 						"type": "Copy",
-						"dependsOn": [],
 						"policy": {
 							"timeout": "7.00:00:00",
 							"retry": 0,
@@ -270,7 +222,6 @@
 							"secureOutput": false,
 							"secureInput": false
 						},
-						"userProperties": [],
 						"typeProperties": {
 							"source": {
 								"type": "AzureSqlSource"
@@ -438,20 +389,17 @@
 						"inputs": [
 							{
 								"referenceName": "AwCustomersTable",
-								"type": "DatasetReference",
-								"parameters": {}
+								"type": "DatasetReference"
 							}
 						],
 						"outputs": [
 							{
 								"referenceName": "CustomersTarget",
-								"type": "DatasetReference",
-								"parameters": {}
+								"type": "DatasetReference"
 							}
 						]
 					}
-				],
-				"annotations": []
+				]
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/AwCustomersTable')]",

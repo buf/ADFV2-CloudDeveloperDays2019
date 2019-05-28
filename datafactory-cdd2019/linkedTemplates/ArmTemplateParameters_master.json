@@ -5,6 +5,12 @@
 		"factoryName": {
 			"value": "datafactory-cdd2019"
 		},
+		"AWDb_connectionString": {
+			"value": ""
+		},
+		"CustomersDb_connectionString": {
+			"value": ""
+		},
 		"containerUri": {
 			"value": ""
 		},
