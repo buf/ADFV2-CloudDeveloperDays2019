@@ -1,3 +1,63 @@
 {
-	"name": "Update Customers"
+	"name": "Update Customers",
+	"properties": {
+		"activities": [
+			{
+				"name": "Lookup Customers",
+				"type": "Lookup",
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"typeProperties": {
+					"source": {
+						"type": "AzureSqlSource"
+					},
+					"dataset": {
+						"referenceName": "AwCustomersTable",
+						"type": "DatasetReference"
+					},
+					"firstRowOnly": false
+				}
+			},
+			{
+				"name": "Merge Customers",
+				"type": "SqlServerStoredProcedure",
+				"dependsOn": [
+					{
+						"activity": "Lookup Customers",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"typeProperties": {
+					"storedProcedureName": "[dbo].[sp_upsert_customers]",
+					"storedProcedureParameters": {
+						"Customers": {
+							"value": {
+								"value": "@activity('Lookup Customers').output",
+								"type": "Expression"
+							},
+							"type": "CustomersTable"
+						}
+					}
+				},
+				"linkedServiceName": {
+					"referenceName": "CustomersDb",
+					"type": "LinkedServiceReference"
+				}
+			}
+		]
+	}
 }
