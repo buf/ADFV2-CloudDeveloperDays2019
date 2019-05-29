@@ -85,7 +85,7 @@
 							"typeProperties": {
 								"source": {
 									"type": "AzureSqlSource",
-									"sqlReaderQuery": "select *\nfrom SalesLT.Customer\nwhere ModifiedDate > \n@{activity('Lookup LastIntegrationDate').output.firstRow.LastIntegrationDate}"
+									"sqlReaderQuery": "select *\nfrom SalesLT.Customer\nwhere ModifiedDate > \n'@{activity('Lookup LastIntegrationDate').output.firstRow.LastIntegrationDate}'"
 								},
 								"sink": {
 									"type": "AzureSqlSink",
