@@ -15,6 +15,14 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'CustomersDb'"
 		},
+		"PostgreSql_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'PostgreSql'"
+		},
+		"LocalSqlServer_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'LocalSqlServer'"
+		},
 		"containerUri": {
 			"type": "string",
 			"metadata": "URI to storage account containing linked ARM templates"
@@ -47,6 +55,12 @@
 					},
 					"CustomersDb_connectionString": {
 						"value": "[parameters('CustomersDb_connectionString')]"
+					},
+					"PostgreSql_connectionString": {
+						"value": "[parameters('PostgreSql_connectionString')]"
+					},
+					"LocalSqlServer_connectionString": {
+						"value": "[parameters('LocalSqlServer_connectionString')]"
 					}
 				}
 			},

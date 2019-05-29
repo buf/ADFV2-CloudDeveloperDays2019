@@ -11,6 +11,12 @@
 		"CustomersDb_connectionString": {
 			"value": ""
 		},
+		"PostgreSql_connectionString": {
+			"value": ""
+		},
+		"LocalSqlServer_connectionString": {
+			"value": ""
+		},
 		"containerUri": {
 			"value": ""
 		},
