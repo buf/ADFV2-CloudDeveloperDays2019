@@ -3,7 +3,7 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "Copy ",
+				"name": "Copy Data",
 				"type": "Copy",
 				"policy": {
 					"timeout": "7.00:00:00",
@@ -13,8 +13,58 @@
 					"secureInput": false
 				},
 				"typeProperties": {
-					"enableStaging": false
-				}
+					"source": {
+						"type": "AzurePostgreSqlSource"
+					},
+					"sink": {
+						"type": "AzureSqlSink"
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"name": "Id"
+								},
+								"sink": {
+									"name": "Id",
+									"type": "Int32"
+								}
+							},
+							{
+								"source": {
+									"name": "FirstName"
+								},
+								"sink": {
+									"name": "FirstName",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "LastName"
+								},
+								"sink": {
+									"name": "LastName",
+									"type": "String"
+								}
+							}
+						]
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "SomePeopleFromAustralia",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "SomeDataFromAustralia",
+						"type": "DatasetReference"
+					}
+				]
 			}
 		]
 	}
