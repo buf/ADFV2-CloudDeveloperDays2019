@@ -1,0 +1,30 @@
+{
+	"name": "IntegrationMarker",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "CustomersDb",
+			"type": "LinkedServiceReference"
+		},
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "Id",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "TableName",
+				"type": "varchar"
+			},
+			{
+				"name": "LastIntegrationDate",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			}
+		],
+		"typeProperties": {
+			"tableName": "[dbo].[IntegrationMarkers]"
+		}
+	}
+}
