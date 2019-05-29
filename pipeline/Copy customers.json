@@ -45,7 +45,7 @@
 					"source": {
 						"type": "AzureSqlSource",
 						"sqlReaderQuery": {
-							"value": "select count(*) from SalesLT.Customer\nwhere ModifiedDate >\n'@{activity('Lookup Old Markers').output.firstRow.LastIntegrationDate}'",
+							"value": "select count(*) as NumOfCustomers\nfrom SalesLT.Customer\nwhere ModifiedDate >\n'@{activity('Lookup Old Markers').output.firstRow.LastIntegrationDate}'",
 							"type": "Expression"
 						}
 					},
@@ -69,7 +69,7 @@
 				],
 				"typeProperties": {
 					"expression": {
-						"value": "@greater(activity('Lookup Updated Customers').output, 0)",
+						"value": "@greater(activity('Lookup Updated Customers').output.firstRow.NumOfCustomers, 0)",
 						"type": "Expression"
 					},
 					"ifTrueActivities": [
