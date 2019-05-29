@@ -1,12 +1,12 @@
 {
-	"name": "CustomersTarget",
+	"name": "TargetCustomers",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "CustomersDb",
 			"type": "LinkedServiceReference"
 		},
 		"folder": {
-			"name": "Customers"
+			"name": "TargetDb"
 		},
 		"type": "AzureSqlTable",
 		"schema": [
@@ -75,7 +75,7 @@
 			}
 		],
 		"typeProperties": {
-			"tableName": "Customers"
+			"tableName": "[dbo].[Customer]"
 		}
 	}
 }

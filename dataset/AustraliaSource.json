@@ -1,9 +1,12 @@
 {
-	"name": "SomePeopleFromAustralia",
+	"name": "AustraliaSource",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "PostgreSql",
 			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "Other"
 		},
 		"type": "AzurePostgreSqlTable",
 		"structure": [

@@ -1,14 +1,14 @@
 {
-	"name": "SomeDataFromAustralia",
+	"name": "LocalhostTarget",
 	"properties": {
 		"linkedServiceName": {
-			"referenceName": "CustomersDb",
+			"referenceName": "LocalSqlServer",
 			"type": "LinkedServiceReference"
 		},
 		"folder": {
-			"name": "Customers"
+			"name": "Other"
 		},
-		"type": "AzureSqlTable",
+		"type": "SqlServerTable",
 		"schema": [
 			{
 				"name": "Id",

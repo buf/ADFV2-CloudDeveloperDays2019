@@ -1,12 +1,12 @@
 {
-	"name": "AwCustomersTable",
+	"name": "AwCustomers",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "AWDb",
 			"type": "LinkedServiceReference"
 		},
 		"folder": {
-			"name": "AW"
+			"name": "Aw"
 		},
 		"type": "AzureSqlTable",
 		"schema": [

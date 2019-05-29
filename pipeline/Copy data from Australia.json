@@ -3,7 +3,7 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "Copy Data",
+				"name": "Copy Data From Australia",
 				"type": "Copy",
 				"policy": {
 					"timeout": "7.00:00:00",
@@ -17,51 +17,19 @@
 						"type": "AzurePostgreSqlSource"
 					},
 					"sink": {
-						"type": "AzureSqlSink"
+						"type": "SqlServerSink"
 					},
-					"enableStaging": false,
-					"translator": {
-						"type": "TabularTranslator",
-						"mappings": [
-							{
-								"source": {
-									"name": "Id"
-								},
-								"sink": {
-									"name": "Id",
-									"type": "Int32"
-								}
-							},
-							{
-								"source": {
-									"name": "FirstName"
-								},
-								"sink": {
-									"name": "FirstName",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"name": "LastName"
-								},
-								"sink": {
-									"name": "LastName",
-									"type": "String"
-								}
-							}
-						]
-					}
+					"enableStaging": false
 				},
 				"inputs": [
 					{
-						"referenceName": "SomePeopleFromAustralia",
+						"referenceName": "AustraliaSource",
 						"type": "DatasetReference"
 					}
 				],
 				"outputs": [
 					{
-						"referenceName": "SomeDataFromAustralia",
+						"referenceName": "LocalhostTarget",
 						"type": "DatasetReference"
 					}
 				]
