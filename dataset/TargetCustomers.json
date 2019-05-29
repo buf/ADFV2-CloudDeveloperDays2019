@@ -75,7 +75,7 @@
 			}
 		],
 		"typeProperties": {
-			"tableName": "[dbo].[Customer]"
+			"tableName": "Customers"
 		}
 	}
 }

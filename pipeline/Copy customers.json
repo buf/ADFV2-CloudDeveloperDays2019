@@ -3,8 +3,8 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "Copy Customers",
-				"type": "Copy",
+				"name": "Lookup Old Markers",
+				"type": "Lookup",
 				"policy": {
 					"timeout": "7.00:00:00",
 					"retry": 0,
@@ -14,180 +14,289 @@
 				},
 				"typeProperties": {
 					"source": {
-						"type": "AzureSqlSource"
+						"type": "AzureSqlSource",
+						"sqlReaderQuery": "SELECT [LastIntegrationDate]\n  FROM [dbo].[IntegrationMarkers]\n  where TableName = 'Customer'\norder by LastIntegrationDate desc"
 					},
-					"sink": {
-						"type": "AzureSqlSink"
-					},
-					"enableStaging": false,
-					"translator": {
-						"type": "TabularTranslator",
-						"mappings": [
-							{
-								"source": {
-									"name": "CustomerID",
-									"type": "Int32"
-								},
-								"sink": {
-									"name": "CustomerID",
-									"type": "Int32"
-								}
-							},
-							{
-								"source": {
-									"name": "NameStyle",
-									"type": "Boolean"
-								},
-								"sink": {
-									"name": "NameStyle",
-									"type": "Boolean"
-								}
-							},
-							{
-								"source": {
-									"name": "Title",
-									"type": "String"
-								},
-								"sink": {
-									"name": "Title",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"name": "FirstName",
-									"type": "String"
-								},
-								"sink": {
-									"name": "FirstName",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"name": "MiddleName",
-									"type": "String"
-								},
-								"sink": {
-									"name": "MiddleName",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"name": "LastName",
-									"type": "String"
-								},
-								"sink": {
-									"name": "LastName",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"name": "Suffix",
-									"type": "String"
-								},
-								"sink": {
-									"name": "Suffix",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"name": "CompanyName",
-									"type": "String"
-								},
-								"sink": {
-									"name": "CompanyName",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"name": "SalesPerson",
-									"type": "String"
-								},
-								"sink": {
-									"name": "SalesPerson",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"name": "EmailAddress",
-									"type": "String"
-								},
-								"sink": {
-									"name": "EmailAddress",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"name": "Phone",
-									"type": "String"
-								},
-								"sink": {
-									"name": "Phone",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"name": "PasswordHash",
-									"type": "String"
-								},
-								"sink": {
-									"name": "PasswordHash",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"name": "PasswordSalt",
-									"type": "String"
-								},
-								"sink": {
-									"name": "PasswordSalt",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"name": "rowguid",
-									"type": "Guid"
-								},
-								"sink": {
-									"name": "rowguid",
-									"type": "Guid"
-								}
-							},
-							{
-								"source": {
-									"name": "ModifiedDate",
-									"type": "DateTime"
-								},
-								"sink": {
-									"name": "ModifiedDate",
-									"type": "DateTime"
-								}
-							}
+					"dataset": {
+						"referenceName": "IntegrationMarkers",
+						"type": "DatasetReference"
+					}
+				}
+			},
+			{
+				"name": "Lookup Updated Customers",
+				"type": "Lookup",
+				"dependsOn": [
+					{
+						"activity": "Lookup Old Markers",
+						"dependencyConditions": [
+							"Succeeded"
 						]
 					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
 				},
-				"inputs": [
-					{
+				"typeProperties": {
+					"source": {
+						"type": "AzureSqlSource",
+						"sqlReaderQuery": {
+							"value": "select count(*) from SalesLT.Customer\nwhere ModifiedDate >\n'@{activity('Lookup Old Markers').output.firstRow.LastIntegrationDate}'",
+							"type": "Expression"
+						}
+					},
+					"dataset": {
 						"referenceName": "AwCustomers",
 						"type": "DatasetReference"
+					},
+					"firstRowOnly": true
+				}
+			},
+			{
+				"name": "If Any Customer",
+				"type": "IfCondition",
+				"dependsOn": [
+					{
+						"activity": "Lookup Updated Customers",
+						"dependencyConditions": [
+							"Succeeded"
+						]
 					}
 				],
-				"outputs": [
-					{
-						"referenceName": "TargetCustomers",
-						"type": "DatasetReference"
-					}
-				]
+				"typeProperties": {
+					"expression": {
+						"value": "@greater(activity('Lookup Updated Customers').output, 0)",
+						"type": "Expression"
+					},
+					"ifTrueActivities": [
+						{
+							"name": "Copy Customers",
+							"type": "Copy",
+							"policy": {
+								"timeout": "7.00:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"typeProperties": {
+								"source": {
+									"type": "AzureSqlSource",
+									"sqlReaderQuery": "select * from SalesLT.Customer\nwhere ModifiedDate >\n'@{activity('Lookup Old Markers').output.firstRow.LastIntegrationDate}'"
+								},
+								"sink": {
+									"type": "AzureSqlSink",
+									"sqlWriterStoredProcedureName": "[dbo].[sp_upsert_customers]",
+									"sqlWriterTableType": "CustomerTable"
+								},
+								"enableStaging": false,
+								"translator": {
+									"type": "TabularTranslator",
+									"mappings": [
+										{
+											"source": {
+												"name": "CustomerID",
+												"type": "Int32"
+											},
+											"sink": {
+												"name": "CustomerID",
+												"type": "Int32"
+											}
+										},
+										{
+											"source": {
+												"name": "NameStyle",
+												"type": "Boolean"
+											},
+											"sink": {
+												"name": "NameStyle",
+												"type": "Boolean"
+											}
+										},
+										{
+											"source": {
+												"name": "Title",
+												"type": "String"
+											},
+											"sink": {
+												"name": "Title",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "FirstName",
+												"type": "String"
+											},
+											"sink": {
+												"name": "FirstName",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "MiddleName",
+												"type": "String"
+											},
+											"sink": {
+												"name": "MiddleName",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "LastName",
+												"type": "String"
+											},
+											"sink": {
+												"name": "LastName",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "Suffix",
+												"type": "String"
+											},
+											"sink": {
+												"name": "Suffix",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "CompanyName",
+												"type": "String"
+											},
+											"sink": {
+												"name": "CompanyName",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "SalesPerson",
+												"type": "String"
+											},
+											"sink": {
+												"name": "SalesPerson",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "EmailAddress",
+												"type": "String"
+											},
+											"sink": {
+												"name": "EmailAddress",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "Phone",
+												"type": "String"
+											},
+											"sink": {
+												"name": "Phone",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "PasswordHash",
+												"type": "String"
+											},
+											"sink": {
+												"name": "PasswordHash",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "PasswordSalt",
+												"type": "String"
+											},
+											"sink": {
+												"name": "PasswordSalt",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "rowguid",
+												"type": "Guid"
+											},
+											"sink": {
+												"name": "rowguid",
+												"type": "Guid"
+											}
+										},
+										{
+											"source": {
+												"name": "ModifiedDate",
+												"type": "DateTime"
+											},
+											"sink": {
+												"name": "ModifiedDate",
+												"type": "DateTime"
+											}
+										}
+									]
+								}
+							},
+							"inputs": [
+								{
+									"referenceName": "AwCustomers",
+									"type": "DatasetReference"
+								}
+							],
+							"outputs": [
+								{
+									"referenceName": "TargetCustomers",
+									"type": "DatasetReference"
+								}
+							]
+						},
+						{
+							"name": "Update integration marker",
+							"type": "SqlServerStoredProcedure",
+							"dependsOn": [
+								{
+									"activity": "Copy Customers",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"timeout": "7.00:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"typeProperties": {
+								"storedProcedureName": "[dbo].[sp_update_marker]",
+								"storedProcedureParameters": {
+									"TableName": {
+										"value": "Customer",
+										"type": "String"
+									}
+								}
+							},
+							"linkedServiceName": {
+								"referenceName": "CustomersDb",
+								"type": "LinkedServiceReference"
+							}
+						}
+					]
+				}
 			}
 		]
 	}
