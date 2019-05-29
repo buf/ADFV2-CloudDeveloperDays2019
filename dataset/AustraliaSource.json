@@ -5,6 +5,9 @@
 			"referenceName": "PostgreSql",
 			"type": "LinkedServiceReference"
 		},
+		"folder": {
+			"name": "Other"
+		},
 		"type": "AzurePostgreSqlTable",
 		"structure": [
 			{

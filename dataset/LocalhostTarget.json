@@ -5,6 +5,9 @@
 			"referenceName": "LocalSqlServer",
 			"type": "LinkedServiceReference"
 		},
+		"folder": {
+			"name": "Other"
+		},
 		"type": "SqlServerTable",
 		"schema": [
 			{
