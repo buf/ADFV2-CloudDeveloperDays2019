@@ -13,8 +13,17 @@
 					"secureInput": false
 				},
 				"typeProperties": {
+					"source": {
+						"type": "AzurePostgreSqlSource"
+					},
 					"enableStaging": false
-				}
+				},
+				"inputs": [
+					{
+						"referenceName": "AustraliaSource",
+						"type": "DatasetReference"
+					}
+				]
 			}
 		]
 	}
