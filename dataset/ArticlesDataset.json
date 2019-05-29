@@ -1,0 +1,54 @@
+{
+	"name": "ArticlesDataset",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "LocalSqlServer",
+			"type": "LinkedServiceReference"
+		},
+		"type": "SqlServerTable",
+		"schema": [
+			{
+				"name": "Id",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "PublicationInfo_PublicationDate",
+				"type": "datetimeoffset",
+				"scale": 7
+			},
+			{
+				"name": "PublicationInfo_CreationDate",
+				"type": "datetimeoffset",
+				"scale": 7
+			},
+			{
+				"name": "LeadAuthor_Name",
+				"type": "nvarchar"
+			},
+			{
+				"name": "OtherAuthors",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Title",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Content",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Document_Name",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Document_Url",
+				"type": "nvarchar"
+			}
+		],
+		"typeProperties": {
+			"tableName": "[Articles].[Articles]"
+		}
+	}
+}
