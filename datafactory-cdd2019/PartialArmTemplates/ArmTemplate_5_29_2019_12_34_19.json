@@ -6,22 +6,6 @@
 			"type": "string",
 			"metadata": "Data Factory Name",
 			"defaultValue": "datafactory-cdd2019"
-		},
-		"AWDb_connectionString": {
-			"type": "secureString",
-			"metadata": "Secure string for 'connectionString' of 'AWDb'"
-		},
-		"CustomersDb_connectionString": {
-			"type": "secureString",
-			"metadata": "Secure string for 'connectionString' of 'CustomersDb'"
-		},
-		"LocalSqlServer_connectionString": {
-			"type": "secureString",
-			"metadata": "Secure string for 'connectionString' of 'LocalSqlServer'"
-		},
-		"PostgreSql_connectionString": {
-			"type": "secureString",
-			"metadata": "Secure string for 'connectionString' of 'PostgreSql'"
 		}
 	},
 	"variables": {
@@ -37,7 +21,6 @@
 					{
 						"name": "Lookup Old Markers",
 						"type": "Lookup",
-						"dependsOn": [],
 						"policy": {
 							"timeout": "7.00:00:00",
 							"retry": 0,
@@ -45,7 +28,6 @@
 							"secureOutput": false,
 							"secureInput": false
 						},
-						"userProperties": [],
 						"typeProperties": {
 							"source": {
 								"type": "AzureSqlSource",
@@ -53,8 +35,7 @@
 							},
 							"dataset": {
 								"referenceName": "IntegrationMarkers",
-								"type": "DatasetReference",
-								"parameters": {}
+								"type": "DatasetReference"
 							}
 						}
 					},
@@ -76,7 +57,6 @@
 							"secureOutput": false,
 							"secureInput": false
 						},
-						"userProperties": [],
 						"typeProperties": {
 							"source": {
 								"type": "AzureSqlSource",
@@ -87,8 +67,7 @@
 							},
 							"dataset": {
 								"referenceName": "AwCustomers",
-								"type": "DatasetReference",
-								"parameters": {}
+								"type": "DatasetReference"
 							},
 							"firstRowOnly": true
 						}
@@ -104,7 +83,6 @@
 								]
 							}
 						],
-						"userProperties": [],
 						"typeProperties": {
 							"expression": {
 								"value": "@greater(activity('Lookup Updated Customers').output.firstRow.NumOfCustomers, 0)",
@@ -114,7 +92,6 @@
 								{
 									"name": "Copy Customers",
 									"type": "Copy",
-									"dependsOn": [],
 									"policy": {
 										"timeout": "7.00:00:00",
 										"retry": 0,
@@ -122,7 +99,6 @@
 										"secureOutput": false,
 										"secureInput": false
 									},
-									"userProperties": [],
 									"typeProperties": {
 										"source": {
 											"type": "AzureSqlSource",
@@ -293,15 +269,13 @@
 									"inputs": [
 										{
 											"referenceName": "AwCustomers",
-											"type": "DatasetReference",
-											"parameters": {}
+											"type": "DatasetReference"
 										}
 									],
 									"outputs": [
 										{
 											"referenceName": "TargetCustomers",
-											"type": "DatasetReference",
-											"parameters": {}
+											"type": "DatasetReference"
 										}
 									]
 								},
@@ -323,7 +297,6 @@
 										"secureOutput": false,
 										"secureInput": false
 									},
-									"userProperties": [],
 									"typeProperties": {
 										"storedProcedureName": "[[dbo].[sp_update_marker]",
 										"storedProcedureParameters": {
@@ -356,237 +329,19 @@
 										"secureOutput": false,
 										"secureInput": false
 									},
-									"userProperties": [],
 									"typeProperties": {
 										"url": "https://prod-16.westeurope.logic.azure.com:443/workflows/c7907ae2c53d4c42af06736350a0d91f/triggers/manual/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=bgZTsV47pxxpgjVpw6UgmLEdqcnQzPAS3h6oXanB3Yw",
-										"method": "POST",
-										"headers": {},
-										"body": {},
-										"linkedServices": [],
-										"datasets": []
+										"method": "POST"
 									}
 								}
 							]
 						}
 					}
-				],
-				"annotations": []
+				]
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/IntegrationMarkers')]",
-				"[concat(variables('factoryId'), '/datasets/AwCustomers')]",
-				"[concat(variables('factoryId'), '/datasets/TargetCustomers')]",
-				"[concat(variables('factoryId'), '/linkedServices/CustomersDb')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/Copy data from Australia')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
-					{
-						"name": "Copy Data From Australia",
-						"type": "Copy",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "7.00:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "AzurePostgreSqlSource"
-							},
-							"sink": {
-								"type": "SqlServerSink"
-							},
-							"enableStaging": false
-						},
-						"inputs": [
-							{
-								"referenceName": "AustraliaSource",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						],
-						"outputs": [
-							{
-								"referenceName": "LocalhostTarget",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						]
-					}
-				],
-				"annotations": []
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/AustraliaSource')]",
-				"[concat(variables('factoryId'), '/datasets/LocalhostTarget')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/AustraliaSource')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "PostgreSql",
-					"type": "LinkedServiceReference"
-				},
-				"folder": {
-					"name": "Other"
-				},
-				"annotations": [],
-				"type": "AzurePostgreSqlTable",
-				"structure": [
-					{
-						"name": "Id",
-						"type": "Int32"
-					},
-					{
-						"name": "FirstName",
-						"type": "String"
-					},
-					{
-						"name": "LastName",
-						"type": "String"
-					}
-				],
-				"typeProperties": {
-					"tableName": "\"public\".\"SomePeople\""
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/PostgreSql')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/AwCustomers')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "AWDb",
-					"type": "LinkedServiceReference"
-				},
-				"folder": {
-					"name": "Aw"
-				},
-				"annotations": [],
-				"type": "AzureSqlTable",
-				"schema": [
-					{
-						"name": "CustomerID",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "NameStyle",
-						"type": "bit"
-					},
-					{
-						"name": "Title",
-						"type": "nvarchar"
-					},
-					{
-						"name": "FirstName",
-						"type": "nvarchar"
-					},
-					{
-						"name": "MiddleName",
-						"type": "nvarchar"
-					},
-					{
-						"name": "LastName",
-						"type": "nvarchar"
-					},
-					{
-						"name": "Suffix",
-						"type": "nvarchar"
-					},
-					{
-						"name": "CompanyName",
-						"type": "nvarchar"
-					},
-					{
-						"name": "SalesPerson",
-						"type": "nvarchar"
-					},
-					{
-						"name": "EmailAddress",
-						"type": "nvarchar"
-					},
-					{
-						"name": "Phone",
-						"type": "nvarchar"
-					},
-					{
-						"name": "PasswordHash",
-						"type": "varchar"
-					},
-					{
-						"name": "PasswordSalt",
-						"type": "varchar"
-					},
-					{
-						"name": "rowguid",
-						"type": "uniqueidentifier"
-					},
-					{
-						"name": "ModifiedDate",
-						"type": "datetime",
-						"precision": 23,
-						"scale": 3
-					}
-				],
-				"typeProperties": {
-					"tableName": "[[SalesLT].[Customer]"
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/AWDb')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/LocalhostTarget')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "LocalSqlServer",
-					"type": "LinkedServiceReference"
-				},
-				"folder": {
-					"name": "Other"
-				},
-				"annotations": [],
-				"type": "SqlServerTable",
-				"schema": [
-					{
-						"name": "Id",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "FirstName",
-						"type": "nvarchar"
-					},
-					{
-						"name": "LastName",
-						"type": "nvarchar"
-					}
-				],
-				"typeProperties": {
-					"tableName": "[[dbo].[SomeDataFromAustralia]"
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/LocalSqlServer')]"
+				"[concat(variables('factoryId'), '/datasets/TargetCustomers')]"
 			]
 		},
 		{
@@ -601,7 +356,6 @@
 				"folder": {
 					"name": "TargetDb"
 				},
-				"annotations": [],
 				"type": "AzureSqlTable",
 				"schema": [
 					{
@@ -671,108 +425,7 @@
 				"typeProperties": {
 					"tableName": "Customers"
 				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/CustomersDb')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/AWDb')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"type": "AzureSqlDatabase",
-				"typeProperties": {
-					"connectionString": "[parameters('AWDb_connectionString')]"
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/CustomersDb')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"type": "AzureSqlDatabase",
-				"typeProperties": {
-					"connectionString": "[parameters('CustomersDb_connectionString')]"
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/LocalSqlServer')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"type": "SqlServer",
-				"typeProperties": {
-					"connectionString": "[parameters('LocalSqlServer_connectionString')]"
-				},
-				"connectVia": {
-					"referenceName": "LocalhostRuntime",
-					"type": "IntegrationRuntimeReference"
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/integrationRuntimes/LocalhostRuntime')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/PostgreSql')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"type": "AzurePostgreSql",
-				"typeProperties": {
-					"connectionString": "[parameters('PostgreSql_connectionString')]"
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/Once per minute')]",
-			"type": "Microsoft.DataFactory/factories/triggers",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"runtimeState": "Started",
-				"pipelines": [
-					{
-						"pipelineReference": {
-							"referenceName": "Copy customers",
-							"type": "PipelineReference"
-						},
-						"parameters": {}
-					}
-				],
-				"type": "ScheduleTrigger",
-				"typeProperties": {
-					"recurrence": {
-						"frequency": "Minute",
-						"interval": 1,
-						"startTime": "2019-05-29T10:04:00.000Z",
-						"timeZone": "UTC"
-					}
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/pipelines/Copy customers')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/LocalhostRuntime')]",
-			"type": "Microsoft.DataFactory/factories/integrationRuntimes",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"type": "SelfHosted",
-				"typeProperties": {}
-			},
-			"dependsOn": []
+			}
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/IntegrationMarkers')]",
@@ -783,7 +436,6 @@
 					"referenceName": "CustomersDb",
 					"type": "LinkedServiceReference"
 				},
-				"annotations": [],
 				"type": "AzureSqlTable",
 				"schema": [
 					{
@@ -805,10 +457,7 @@
 				"typeProperties": {
 					"tableName": "[[dbo].[IntegrationMarkers]"
 				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/CustomersDb')]"
-			]
+			}
 		}
 	]
 }

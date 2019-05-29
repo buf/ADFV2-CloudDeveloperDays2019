@@ -15,13 +15,13 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'CustomersDb'"
 		},
-		"PostgreSql_connectionString": {
-			"type": "secureString",
-			"metadata": "Secure string for 'connectionString' of 'PostgreSql'"
-		},
 		"LocalSqlServer_connectionString": {
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'LocalSqlServer'"
+		},
+		"PostgreSql_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'PostgreSql'"
 		},
 		"containerUri": {
 			"type": "string",

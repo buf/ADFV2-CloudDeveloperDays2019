@@ -11,10 +11,10 @@
 		"CustomersDb_connectionString": {
 			"value": ""
 		},
-		"PostgreSql_connectionString": {
+		"LocalSqlServer_connectionString": {
 			"value": ""
 		},
-		"LocalSqlServer_connectionString": {
+		"PostgreSql_connectionString": {
 			"value": ""
 		}
 	}
