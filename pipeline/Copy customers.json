@@ -45,7 +45,7 @@
 					"source": {
 						"type": "AzureSqlSource",
 						"sqlReaderQuery": {
-							"value": "select count(*) as NumOfCustomers\nfrom SalesLT.Customer\nwhere ModifiedDate > \n@{activity('Lookup LastIntegrationDate').output.firstRow.LastIntegrationDate}",
+							"value": "select count(*) as NumOfCustomers\nfrom SalesLT.Customer\nwhere ModifiedDate > \n'@{activity('Lookup LastIntegrationDate').output.firstRow.LastIntegrationDate}'",
 							"type": "Expression"
 						}
 					},
