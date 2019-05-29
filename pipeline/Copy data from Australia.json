@@ -16,11 +16,20 @@
 					"source": {
 						"type": "AzurePostgreSqlSource"
 					},
+					"sink": {
+						"type": "SqlServerSink"
+					},
 					"enableStaging": false
 				},
 				"inputs": [
 					{
 						"referenceName": "AustraliaSource",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "LocalhostTarget",
 						"type": "DatasetReference"
 					}
 				]

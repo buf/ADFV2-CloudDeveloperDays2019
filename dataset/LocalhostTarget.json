@@ -1,5 +1,5 @@
 {
-	"name": "AustraliaTarget",
+	"name": "LocalhostTarget",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "LocalSqlServer",
