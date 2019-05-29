@@ -1,0 +1,28 @@
+{
+	"name": "SomeDataFromAustralia",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "CustomersDb",
+			"type": "LinkedServiceReference"
+		},
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "Id",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "FirstName",
+				"type": "nvarchar"
+			},
+			{
+				"name": "LastName",
+				"type": "nvarchar"
+			}
+		],
+		"typeProperties": {
+			"tableName": "[dbo].[SomeDataFromAustralia]"
+		}
+	}
+}
