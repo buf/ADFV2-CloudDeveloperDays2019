@@ -1,7 +1,7 @@
 {
 	"name": "Once per minute",
 	"properties": {
-		"runtimeState": "Started",
+		"runtimeState": "Stopped",
 		"pipelines": [
 			{
 				"pipelineReference": {
