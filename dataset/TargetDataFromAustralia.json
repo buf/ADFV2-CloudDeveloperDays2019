@@ -1,0 +1,28 @@
+{
+	"name": "TargetDataFromAustralia",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "LocalSqlServer",
+			"type": "LinkedServiceReference"
+		},
+		"type": "SqlServerTable",
+		"schema": [
+			{
+				"name": "Id",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "FirstName",
+				"type": "nvarchar"
+			},
+			{
+				"name": "LastName",
+				"type": "nvarchar"
+			}
+		],
+		"typeProperties": {
+			"tableName": "[dbo].[SomeDataFromAustralia]"
+		}
+	}
+}
