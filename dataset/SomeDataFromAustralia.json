@@ -5,6 +5,9 @@
 			"referenceName": "CustomersDb",
 			"type": "LinkedServiceReference"
 		},
+		"folder": {
+			"name": "Customers"
+		},
 		"type": "AzureSqlTable",
 		"schema": [
 			{
